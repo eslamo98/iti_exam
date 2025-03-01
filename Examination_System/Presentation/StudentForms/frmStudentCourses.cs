@@ -36,7 +36,6 @@ namespace Examination_System.Presentation
             this.Close();
             frmStudentProfile frmStudentProfile = new frmStudentProfile();
             frmStudentProfile.Show();
-
         }
         private void LoadStudentCourses()
         {
@@ -44,6 +43,21 @@ namespace Examination_System.Presentation
             {
                 DataTable dt = _courceService.GetStudentCources(stdID);
                 dgvStudentCourses.DataSource = dt;
+                dgvStudentCourses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dgvStudentCourses.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+                dgvStudentCourses.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                dgvStudentCourses.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                dgvStudentCourses.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+                dgvStudentCourses.DefaultCellStyle.BackColor = Color.WhiteSmoke;
+                dgvStudentCourses.DefaultCellStyle.ForeColor = Color.Black;
+                dgvStudentCourses.DefaultCellStyle.SelectionBackColor = Color.LightBlue;
+                dgvStudentCourses.DefaultCellStyle.SelectionForeColor = Color.Black;
+                dgvStudentCourses.EnableHeadersVisualStyles = false;
+                dgvStudentCourses.BorderStyle = BorderStyle.None;
+                dgvStudentCourses.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+                dgvStudentCourses.RowHeadersVisible = false;
+                dgvStudentCourses.BackgroundColor = Color.White;
+                dgvStudentCourses.RowTemplate.Height = 30;
             }
             catch (Exception ex)
             {

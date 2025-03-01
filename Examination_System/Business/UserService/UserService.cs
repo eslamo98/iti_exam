@@ -14,7 +14,7 @@ namespace Examination_System.Business
         {
             DataTable dtStudentAnswers = new DataTable();
 
-           
+
             try
             {
 
@@ -43,8 +43,8 @@ namespace Examination_System.Business
                 // Handle database exceptions (e.g., log the error)
                 throw new Exception("An error occurred while fetching student answers: " + ex.Message);
             }
-          
-            
+
+
 
             return dtStudentAnswers;
         }
@@ -71,8 +71,9 @@ namespace Examination_System.Business
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddRange(parameters);
 
-                // Execute the query
-                Reposatory.DML(cmd);
+                    // Execute the query
+                    Reposatory.DML(cmd);
+
                 }
 
             }
@@ -84,18 +85,18 @@ namespace Examination_System.Business
         }
         public static Tuple<int, User> Login(string usernameOrEmail, string password)
         {
-			try
-			{
+            try
+            {
                 return UserRepository.GetLogin(usernameOrEmail, password);
-                
-            }
-			catch (Exception ex)
-			{
 
-				throw ex;
-			}
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
-        
+
         public static void Logout()
         {
             General.LoggedUser = null;
@@ -149,7 +150,8 @@ namespace Examination_System.Business
 
                     pic.Image = Image.FromStream(stream);
                 }
-            } else
+            }
+            else
             {
                 string imageFileName = user.Gender == Business.Enums.Gender.Male
                 ? "man.png"
@@ -170,7 +172,7 @@ namespace Examination_System.Business
                 }
             }
 
-            
+
         }
         public static int DeleteTeacherById(int teacherId)
         {
@@ -185,11 +187,12 @@ namespace Examination_System.Business
                 {
                     Status, Error
                 });
-                 Reposatory.DML(cmd);
+                Reposatory.DML(cmd);
                 return (int)Status.Value;
             }
             catch (Exception ex)
             {
+
 
                 throw ex;
             }
@@ -252,16 +255,19 @@ namespace Examination_System.Business
 
         public static DataTable GetStudentsByTeacherAndCourse(int courseId, int teacherId)
         {
-            if(courseId == 0 && teacherId != 0)
+            if (courseId == 0 && teacherId != 0)
             {
                 return GetAllStudentsByTeacherId(teacherId);
-            } else if(teacherId == 0 && courseId != 0)
+            }
+            else if (teacherId == 0 && courseId != 0)
             {
                 return GetStudentsByCourseId(courseId);
-            } else if(courseId != 0 & teacherId != 0)
+            }
+            else if (courseId != 0 & teacherId != 0)
             {
                 return UserRepository.GetStudentsByTeacherAndCourse(courseId, teacherId);
-            } else
+            }
+            else
             {
                 return GetAllStudents();
             }
@@ -287,7 +293,7 @@ namespace Examination_System.Business
 
                 throw ex;
             }
-            
+
         }
         public static DataTable getAllCoursesForTeacher(int teacherId)
         {
@@ -313,6 +319,28 @@ namespace Examination_System.Business
         public static List<ActivityLog> GetRecentActivities()
         {
             DataTable dataTable = Reposatory.select(new SqlCommand($"  select top(5) * from ActivityLog order by ActivityID desc"));
+            List<ActivityLog> logs = new List<ActivityLog>();
+            foreach (DataRow row in dataTable.Rows)
+            {
+                ActivityLog log = new ActivityLog
+                {
+                    ActivityID = Convert.ToInt32(row["ActivityID"]),
+                    TableName = row["TableName"].ToString(),
+                    RecordID = Convert.ToInt32(row["RecordID"]),
+                    ActionType = row["ActionType"].ToString(),
+                    ActionTimestamp = row["ActionTimestamp"] != DBNull.Value ? (DateTime?)row["ActionTimestamp"] : null,
+                    Details = row["Details"] != DBNull.Value ? row["Details"].ToString() : null,
+                    UserName = row["UserName"] != DBNull.Value ? row["UserName"].ToString() : null
+                };
+
+                logs.Add(log);
+            }
+            return logs;
+        }
+
+        public static List<ActivityLog> GetRecentAllActivities()
+        {
+            DataTable dataTable = Reposatory.select(new SqlCommand($"  select * from ActivityLog order by ActivityID desc"));
             List<ActivityLog> logs = new List<ActivityLog>();
             foreach (DataRow row in dataTable.Rows)
             {

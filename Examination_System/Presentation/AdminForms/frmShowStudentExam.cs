@@ -35,6 +35,7 @@ namespace Examination_System.Presentation.AdminForms
             LoadQuestions(dtQuestions);
         }
 
+
         private int totalMarks;
 
         private void LoadExamDetails()
@@ -90,7 +91,7 @@ namespace Examination_System.Presentation.AdminForms
             }
 
             // Calculate and display the result
-            int studentMarks = CalculateStudentMarks();
+            int studentMarks = ExamService.GetScore(examId, studentId);
             lb_result.Text = $"Marks Obtained: {studentMarks} / Total Marks: {totalMarks}";
         }
 

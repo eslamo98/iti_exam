@@ -1,27 +1,52 @@
 ﻿using Examination_System.Business;
+using Examination_System.Data_Access.Models;
+using Examination_System.Business.Enums;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Examination_System.Presentation
 {
     public partial class frmStudentProfile : Form
     {
+        // تغيير تعريف المستخدم لجعله غير readonly بحيث يمكن تحديثه إذا لزم الأمر
+        private User user;
+
         public frmStudentProfile()
         {
             InitializeComponent();
-
         }
+
         public frmStudentProfile(frmLogin _frmLogin)
         {
             InitializeComponent();
+        }
 
+        // المُنشئ الرئيسي الذي يستقبل كائن المستخدم
+        public frmStudentProfile(User _user)
+        {
+            InitializeComponent();
+            if (_user == null)
+            {
+                MessageBox.Show("لم يتم تمرير بيانات المستخدم بشكل صحيح", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
+            }
+            user = _user;
+            InitializeProfile();
+        }
+
+        // دالة تهيئة بيانات الملف الشخصي
+        private void InitializeProfile()
+        {
+            // ضبط صورة المستخدم من خلال دالة الخدمة
+            UserService.SetUserImage(pic_userImg, user);
+
+            // تعبئة الحقول ببيانات المستخدم
+            tx_username.Text = user.Username;
+            // عدم عرض كلمة المرور الحالية لأسباب أمنية، ونترك الحقل فارغًا لتحديثها فقط عند الحاجة
+            tx_password.Text = "";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -55,5 +80,6 @@ namespace Examination_System.Presentation
             this.Close();
             new frmStudentExam().Show();
         }
+       
     }
 }

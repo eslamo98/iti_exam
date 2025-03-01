@@ -62,20 +62,19 @@ namespace Examination_System.Presentation.AdminForms
 
             ListBox lstRecentActivities = new ListBox
             {
-                Size = new Size(500, 100),
                 Location = new Point(30, 395),
+                Size = new Size(660, 150),
                 Font = new Font("Segoe UI", 10),
                 ForeColor = Color.Black,
-                Width = 660,
-                Height = 150,
-                MaximumSize = new Size(660, 150),
-                
+                IntegralHeight = false,
+                HorizontalScrollbar = true // Enable horizontal scrolling
             };
+            List<ActivityLog> logs = UserService.GetRecentActivities();
+            foreach (ActivityLog item in logs)
+            {
 
-            lstRecentActivities.Items.Add("📌 Ahmed Metwally added a new exam.");
-            lstRecentActivities.Items.Add("📌 A new student registered: John Doe.");
-            lstRecentActivities.Items.Add("📌 Math Course updated with new content.");
-
+                lstRecentActivities.Items.Add($"📌 {item}");
+            }
             homePanel.Controls.Add(lblWelcome);
             homePanel.Controls.Add(lblSubHeading);
             homePanel.Controls.Add(studentsCard);

@@ -117,16 +117,17 @@
             button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button2.ForeColor = Color.Snow;
-            button2.Image = Properties.Resources.icons8_settings_32;
+            button2.Image = Properties.Resources.icons8_audit_log_30__1_;
             button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Location = new Point(-18, -9);
             button2.Name = "button2";
             button2.Padding = new Padding(30, 0, 0, 0);
             button2.Size = new Size(260, 51);
             button2.TabIndex = 2;
-            button2.Text = "             Settings";
+            button2.Text = "             Activity Log";
             button2.TextAlign = ContentAlignment.MiddleLeft;
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // panel8
             // 

@@ -82,6 +82,10 @@
               "target": "Package",
               "version": "[15.0.4795.1001, )"
             },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[9.2.0, )"
+            },
             "Syncfusion.GridHelperClasses.Windows": {
               "target": "Package",
               "version": "[28.2.6, )"

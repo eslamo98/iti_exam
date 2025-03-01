@@ -82,5 +82,10 @@ namespace Examination_System
             new ToastForm(Business.Enums.ToastType.Success, "Logged out Successfully").Show();
             General.frmLogin.Show();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            General.LoadUserControl(new frmAdminActivityUc());
+        }
     }
 }

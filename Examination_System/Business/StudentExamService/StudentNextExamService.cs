@@ -23,7 +23,8 @@ namespace Examination_System.Business.StudentExamService
                 {
                     conn.Open();
 
-                    using (SqlCommand cmd = new SqlCommand("select distinct e.Id, e.CourseID,cr.CourseName, e.StartTime, e.EndTime, e.NoOFQuestions, e.Duration,e.TotalMarks\r\nfrom Exam e join StudentCourses sc on e.CourseID = sc.CourseID join Courses cr on e.CourseID=cr.ID\r\nwhere sc.StudentID = @StudentID and e.EndTime > GETDATE()", conn))
+                    using (SqlCommand cmd = new SqlCommand("select distinct e.ID,cr.CourseName, e.StartTime, e.EndTime, e.NoOFQuestions, e.Duration,e.TotalMarks\r\nfrom Exam e join StudentCourses sc on e.CourseID = sc.CourseID join Courses cr on e.CourseID=cr.ID\r\nwhere sc.StudentID = @StudentID and e.EndTime > GETDATE()", conn))
+
                     {
                         cmd.Parameters.AddWithValue("StudentID", stdID);
 

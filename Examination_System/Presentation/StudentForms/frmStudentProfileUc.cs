@@ -11,6 +11,7 @@ using Examination_System.Business.Enums;
 using Examination_System.Business;
 using Examination_System.Presentation.Common;
 using Examination_System.Data_Access.Models;
+using Examination_System.Presentation.AdminForms;
 
 namespace Examination_System.Presentation.StudentForms
 {
@@ -53,6 +54,7 @@ namespace Examination_System.Presentation.StudentForms
                 LastName = tx_lastname.Text.Trim(),
                 PasswordHash = tx_password.Text.Trim(),
                 SSN = tx_ssn.Text.Trim(),
+
                 Username = tx_username.Text.Trim(),
                 UserRole = user.ID == General.LoggedUser.ID ? UserRole.Admin : user.UserRole,
             };
@@ -99,7 +101,6 @@ namespace Examination_System.Presentation.StudentForms
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-
         }
 
 
@@ -131,7 +132,7 @@ namespace Examination_System.Presentation.StudentForms
                 MessageBox.Show("Student was created successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (returnForm == ReturnForm.frmAdminManageStudents)
                 {
-                    //new frmAdminManageStudents().Show();
+                    General.LoadUserControl(new frmAdminManageStudentUc());
                 }
             }
             else

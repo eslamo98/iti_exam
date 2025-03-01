@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+    <PackageReference Include="MySql.Data" Version="9.2.0" />
     <PackageReference Include="Syncfusion.GridHelperClasses.Windows" Version="28.2.6" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
@@ -28,6 +29,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Presentation\AdminForms\frmAdminManageCoursesUc.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Presentation\AdminForms\frmAdminActivityUc.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Presentation\AdminForms\frmAdminStudentExamsUc.cs">

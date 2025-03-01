@@ -14,3 +14,4 @@ namespace Examination_System.Data_Access.Models
         public int CoursesNumber { get; set; }
     }
 }
+

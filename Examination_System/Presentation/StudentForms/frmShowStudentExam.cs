@@ -1,12 +1,14 @@
 ﻿using Examination_System.Business;
 using Examination_System.Business.Enums;
+using Examination_System.Business.StudentExamService;
 using ExaminationSystem.Business.ExamService;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Examination_System.Presentation.StudentForms
 {
@@ -16,47 +18,101 @@ namespace Examination_System.Presentation.StudentForms
         private int examId;
         private DataTable dtQuestions;
         private int currentQuestionIndex = 0;
-        private System.Windows.Forms.Timer examTimer;
+        private Timer examTimer;
         private DateTime examEndTime;
+        // لتخزين الإجابات المُختارة لكل سؤال
+        private Dictionary<int, List<int>> submittedAnswers;
 
         public frmShowStudentExam(int _studentId, int _examId)
         {
             InitializeComponent();
             studentId = _studentId;
             examId = _examId;
+            submittedAnswers = new Dictionary<int, List<int>>();
 
-            // Load exam details and questions
-            LoadExamDetails();
-            dtQuestions = UserService.GetStudentExamQuestions(studentId, examId);
+            // تعديل التصميم العام للنموذج
+            this.BackColor = Color.WhiteSmoke;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.StartPosition = FormStartPosition.CenterScreen;
 
-            // Debug: Check if questions are loaded
-            if (dtQuestions.Rows.Count == 0)
+            try
             {
-                MessageBox.Show("No questions found for this exam.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                // تحميل تفاصيل الامتحان والتحقق من وقت البدء
+                LoadExamDetails();
+
+                dtQuestions = UserService.GetStudentExamQuestions(studentId, examId);
+                if (dtQuestions == null || dtQuestions.Rows.Count == 0)
+                {
+                    MessageBox.Show("No questions found for this exam.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                    return;
+                }
+
+                LoadQuestion(currentQuestionIndex);
+                InitializeTimer();
             }
-
-            LoadQuestion(currentQuestionIndex);
-
-            // Initialize and start the exam timer
-            InitializeTimer();
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while loading exam data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
         }
 
         private void LoadExamDetails()
         {
-            DataTable exam = ExamService.GetExamById(examId);
-            if (exam.Rows.Count > 0)
+            try
             {
-                lb_examtitle.Text = $"Exam: {exam.Rows[0]["ExamType"]}";
-                examEndTime = DateTime.Now.AddMinutes(Convert.ToInt32(exam.Rows[0]["Duration"]));
-                //lb_timer.Text = $"Time Remaining: {examEndTime.Subtract(DateTime.Now):hh\\:mm\\:ss}";
+                DataTable exam = ExamService.GetExamById(examId);
+                if (exam != null && exam.Rows.Count > 0)
+                {
+                    // عرض عنوان الامتحان مع تنسيق محسّن
+                    lb_examtitle.Text = $"Exam: {exam.Rows[0]["ExamType"]}";
+                    lb_examtitle.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+                    lb_examtitle.ForeColor = Color.FromArgb(0, 120, 215);
+
+                    // الحصول على وقت بدء الامتحان من قاعدة البيانات (يفترض أنه موجود بالحقل "StartTime")
+                    DateTime examStartTime = Convert.ToDateTime(exam.Rows[0]["StartTime"]);
+
+                    // التأكد من أن الامتحان بدأ بالفعل
+                    if (DateTime.Now < examStartTime)
+                    {
+                        MessageBox.Show("The exam has not started yet. Please start at " + examStartTime.ToString("T"),
+                                        "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.Close();
+                        return;
+                    }
+
+                    // حساب وقت انتهاء الامتحان بناءً على وقت البدء
+                    int duration;
+                    if (int.TryParse(exam.Rows[0]["Duration"].ToString(), out duration))
+                    {
+                        examEndTime = examStartTime.AddMinutes(duration);
+                    }
+                    else
+                    {
+                        examEndTime = examStartTime.AddMinutes(60); // مدة افتراضية 60 دقيقة
+                    }
+                    lb_result.Text = $"Time Remaining: {examEndTime.Subtract(DateTime.Now):hh\\:mm\\:ss}";
+                    lb_result.Font = new Font("Segoe UI", 14, FontStyle.Regular);
+                    lb_result.ForeColor = Color.DarkRed;
+                }
+                else
+                {
+                    MessageBox.Show("Exam details not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while loading exam details: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
 
         private void InitializeTimer()
         {
-            examTimer = new System.Windows.Forms.Timer();
-            examTimer.Interval = 1000; // 1 second
+            examTimer = new Timer();
+            examTimer.Interval = 1000; // 1 ثانية
             examTimer.Tick += ExamTimer_Tick;
             examTimer.Start();
         }
@@ -64,7 +120,7 @@ namespace Examination_System.Presentation.StudentForms
         private void ExamTimer_Tick(object sender, EventArgs e)
         {
             TimeSpan remainingTime = examEndTime.Subtract(DateTime.Now);
-            //lb_timer.Text = $"Time Remaining: {remainingTime:hh\\:mm\\:ss}";
+            lb_result.Text = $"Time Remaining: {remainingTime:hh\\:mm\\:ss}";
 
             if (remainingTime.TotalSeconds <= 0)
             {
@@ -82,96 +138,180 @@ namespace Examination_System.Presentation.StudentForms
                 return;
             }
 
-            DataRow questionRow = dtQuestions.Rows[questionIndex];
-            int questionId = Convert.ToInt32(questionRow["Id"]);
-            string questionText = questionRow["Body"].ToString();
-            QuestionType questionType = (QuestionType)(Byte)questionRow["QuestionType"];
-
-            // Clear previous question controls
             flowLayoutPanelQuestions.Controls.Clear();
 
-            // Display the question
-            Label lblQuestion = new Label
+            try
             {
-                Text = questionText,
-                AutoSize = true,
-                Font = new System.Drawing.Font("Arial", 12, FontStyle.Bold),
-                Margin = new Padding(10)
-            };
-            flowLayoutPanelQuestions.Controls.Add(lblQuestion);
+                DataRow questionRow = dtQuestions.Rows[questionIndex];
+                int questionId = Convert.ToInt32(questionRow["Id"]);
+                string questionText = questionRow["Body"].ToString();
+                QuestionType questionType = (QuestionType)Convert.ToByte(questionRow["QuestionType"]);
 
-            // Load answers for the question
-            LoadAnswers(questionId, questionType);
+                // عرض السؤال بتنسيق محسّن
+                Label lblQuestion = new Label
+                {
+                    Text = questionText,
+                    AutoSize = false,
+                    Font = new Font("Segoe UI", 14, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(0, 120, 215),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Dock = DockStyle.Top,
+                    Height = 60,
+                    Padding = new Padding(10),
+                    BackColor = Color.White
+                };
+                flowLayoutPanelQuestions.Controls.Add(lblQuestion);
 
-            // Add navigation buttons
-            Button btnPrevious = new Button { Text = "Previous", Enabled = (currentQuestionIndex > 0) };
-            Button btnNext = new Button { Text = "Next", Enabled = (currentQuestionIndex < dtQuestions.Rows.Count - 1) };
-            Button btnSubmitAnswer = new Button { Text = "Submit Answer" };
+                // تحميل الإجابات للسؤال مع استعادة حالة الإجابة إن وُجدت
+                LoadAnswers(questionId, questionType);
 
-            btnPrevious.Click += (s, e) => { currentQuestionIndex--; LoadQuestion(currentQuestionIndex); };
-            btnNext.Click += (s, e) => { currentQuestionIndex++; LoadQuestion(currentQuestionIndex); };
-            btnSubmitAnswer.Click += (s, e) => SubmitAnswer(questionId);
+                // إنشاء أزرار التنقل والتقديم بتنسيق محسّن
+                FlowLayoutPanel navigationPanel = new FlowLayoutPanel
+                {
+                    FlowDirection = FlowDirection.LeftToRight,
+                    AutoSize = true,
+                    Margin = new Padding(10)
+                };
 
-            FlowLayoutPanel navigationPanel = new FlowLayoutPanel
+                Button btnPrevious = new Button
+                {
+                    Text = "Previous",
+                    Enabled = (currentQuestionIndex > 0),
+                    FlatStyle = FlatStyle.Flat,
+                    BackColor = Color.FromArgb(240, 240, 240),
+                    ForeColor = Color.Black,
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    Margin = new Padding(5),
+                    Width = 100,
+                    Height = 40
+                };
+                Button btnNext = new Button
+                {
+                    Text = "Next",
+                    Enabled = (currentQuestionIndex < dtQuestions.Rows.Count - 1),
+                    FlatStyle = FlatStyle.Flat,
+                    BackColor = Color.FromArgb(240, 240, 240),
+                    ForeColor = Color.Black,
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    Margin = new Padding(5),
+                    Width = 100,
+                    Height = 40
+                };
+                Button btnSubmitAnswer = new Button
+                {
+                    Text = "Submit Answer",
+                    FlatStyle = FlatStyle.Flat,
+                    BackColor = Color.FromArgb(0, 120, 215),
+                    ForeColor = Color.White,
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    Margin = new Padding(5),
+                    Width = 140,
+                    Height = 40
+                };
+
+                btnPrevious.Click += (s, e) =>
+                {
+                    SaveCurrentAnswer(questionId);
+                    currentQuestionIndex--;
+                    LoadQuestion(currentQuestionIndex);
+                };
+
+                btnNext.Click += (s, e) =>
+                {
+                    SaveCurrentAnswer(questionId);
+                    currentQuestionIndex++;
+                    LoadQuestion(currentQuestionIndex);
+                };
+
+                btnSubmitAnswer.Click += (s, e) =>
+                {
+                    SubmitAnswer(questionId, btnSubmitAnswer);
+                };
+
+                navigationPanel.Controls.Add(btnPrevious);
+                navigationPanel.Controls.Add(btnNext);
+                navigationPanel.Controls.Add(btnSubmitAnswer);
+
+                flowLayoutPanelQuestions.Controls.Add(navigationPanel);
+
+                // تحديث مؤشر التقدم مع تنسيق محسّن
+                lb_examtitle.Text = $"Question {currentQuestionIndex + 1} of {dtQuestions.Rows.Count}";
+            }
+            catch (Exception ex)
             {
-                FlowDirection = FlowDirection.LeftToRight,
-                AutoSize = true,
-                Margin = new Padding(10)
-            };
-            navigationPanel.Controls.Add(btnPrevious);
-            navigationPanel.Controls.Add(btnNext);
-            navigationPanel.Controls.Add(btnSubmitAnswer);
-
-            flowLayoutPanelQuestions.Controls.Add(navigationPanel);
-
-            // Update progress label
-            //lb_progress.Text = $"Question {currentQuestionIndex + 1} of {dtQuestions.Rows.Count}";
+                MessageBox.Show("An error occurred while loading the question: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void LoadAnswers(int questionId, QuestionType questionType)
         {
-            DataTable dtAnswers = UserService.GetStudentExamQuestionAnswers(questionId);
-
-            // Debug: Check if answers are loaded
-            if (dtAnswers.Rows.Count == 0)
+            try
             {
-                MessageBox.Show("No answers found for this question.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (questionType == QuestionType.SingleChoice || questionType == QuestionType.TrueOrFalse)
-            {
-                foreach (DataRow answerRow in dtAnswers.Rows)
+                DataTable dtAnswers = UserService.GetStudentExamQuestionAnswers(questionId);
+                if (dtAnswers == null || dtAnswers.Rows.Count == 0)
                 {
-                    RadioButton radio = new RadioButton
+                    MessageBox.Show("No answers found for this question.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // التحقق مما إذا كانت الإجابة للسؤال قد تم تقديمها مسبقًا
+                bool isSubmitted = submittedAnswers.ContainsKey(questionId);
+                List<int> savedAnswers = isSubmitted ? submittedAnswers[questionId] : new List<int>();
+
+                if (questionType == QuestionType.SingleChoice || questionType == QuestionType.TrueOrFalse)
+                {
+                    foreach (DataRow answerRow in dtAnswers.Rows)
                     {
-                        Text = answerRow["AnswerText"].ToString(),
-                        Tag = answerRow["Id"], // Store AnswerId in Tag
-                        AutoSize = true,
-                        Margin = new Padding(10)
-                    };
-                    flowLayoutPanelQuestions.Controls.Add(radio);
+                        RadioButton radio = new RadioButton
+                        {
+                            Text = answerRow["AnswerText"].ToString(),
+                            Tag = answerRow["Id"],
+                            AutoSize = true,
+                            Margin = new Padding(10),
+                            Enabled = !isSubmitted,
+                            Font = new Font("Segoe UI", 12, FontStyle.Regular),
+                            ForeColor = Color.Black
+                        };
+                        int answerId = Convert.ToInt32(answerRow["Id"]);
+                        if (savedAnswers.Contains(answerId))
+                        {
+                            radio.Checked = true;
+                        }
+                        flowLayoutPanelQuestions.Controls.Add(radio);
+                    }
+                }
+                else if (questionType == QuestionType.MultipleChoice)
+                {
+                    foreach (DataRow answerRow in dtAnswers.Rows)
+                    {
+                        CheckBox checkBox = new CheckBox
+                        {
+                            Text = answerRow["AnswerText"].ToString(),
+                            Tag = answerRow["Id"],
+                            AutoSize = true,
+                            Margin = new Padding(10),
+                            Enabled = !isSubmitted,
+                            Font = new Font("Segoe UI", 12, FontStyle.Regular),
+                            ForeColor = Color.Black
+                        };
+                        int answerId = Convert.ToInt32(answerRow["Id"]);
+                        if (savedAnswers.Contains(answerId))
+                        {
+                            checkBox.Checked = true;
+                        }
+                        flowLayoutPanelQuestions.Controls.Add(checkBox);
+                    }
                 }
             }
-            else if (questionType == QuestionType.MultipleChoice)
+            catch (Exception ex)
             {
-                foreach (DataRow answerRow in dtAnswers.Rows)
-                {
-                    CheckBox checkBox = new CheckBox
-                    {
-                        Text = answerRow["AnswerText"].ToString(),
-                        Tag = answerRow["Id"], // Store AnswerId in Tag
-                        AutoSize = true,
-                        Margin = new Padding(10)
-                    };
-                    flowLayoutPanelQuestions.Controls.Add(checkBox);
-                }
+                MessageBox.Show("An error occurred while loading answers: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void SubmitAnswer(int questionId)
+        private void SaveCurrentAnswer(int questionId)
         {
-            // Get the selected answer(s)
+            // حفظ الإجابة المُختارة حاليًا في الذاكرة
             var selectedAnswers = flowLayoutPanelQuestions.Controls
                 .OfType<RadioButton>()
                 .Where(r => r.Checked)
@@ -183,30 +323,85 @@ namespace Examination_System.Presentation.StudentForms
                         .Select(c => Convert.ToInt32(c.Tag))
                 ).ToList();
 
-            if (selectedAnswers.Count == 0)
+            if (submittedAnswers.ContainsKey(questionId))
             {
-                MessageBox.Show("Please select an answer before submitting.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Save the answer(s) to the Submit table
-            foreach (int answerId in selectedAnswers)
-            {
-                UserService.SubmitAnswer(studentId, examId, questionId, answerId);
-            }
-
-            MessageBox.Show("Answer submitted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            // Move to the next question
-            if (currentQuestionIndex < dtQuestions.Rows.Count - 1)
-            {
-                currentQuestionIndex++;
-                LoadQuestion(currentQuestionIndex);
+                submittedAnswers[questionId] = selectedAnswers;
             }
             else
             {
-                MessageBox.Show("You have answered all questions.", "Exam Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                submittedAnswers.Add(questionId, selectedAnswers);
+            }
+        }
+
+        private void SubmitAnswer(int questionId, Button submitButton)
+        {
+            try
+            {
+                // منع إعادة تقديم الإجابة إذا كانت قد تم تقديمها بالفعل
+                if (submittedAnswers.ContainsKey(questionId) && submittedAnswers[questionId].Count > 0)
+                {
+                    MessageBox.Show("Answer for this question has already been submitted.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var selectedAnswers = flowLayoutPanelQuestions.Controls
+                    .OfType<RadioButton>()
+                    .Where(r => r.Checked)
+                    .Select(r => Convert.ToInt32(r.Tag))
+                    .Union(
+                        flowLayoutPanelQuestions.Controls
+                        .OfType<CheckBox>()
+                        .Where(c => c.Checked)
+                        .Select(c => Convert.ToInt32(c.Tag))
+                    ).ToList();
+
+                if (selectedAnswers.Count == 0)
+                {
+                    MessageBox.Show("Please select an answer before submitting.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // إرسال الإجابات إلى النظام
+                foreach (int answerId in selectedAnswers)
+                {
+                    UserService.SubmitAnswer(studentId, examId, questionId, answerId);
+                }
+
+                // حفظ الإجابة في الذاكرة لتعطيل التعديل لاحقًا
+                submittedAnswers.Add(questionId, selectedAnswers);
+
+                MessageBox.Show("Answer submitted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // تعطيل عناصر الإجابة لمنع التعديل
+                foreach (var control in flowLayoutPanelQuestions.Controls)
+                {
+                    if (control is RadioButton rb)
+                    {
+                        rb.Enabled = false;
+                    }
+                    else if (control is CheckBox cb)
+                    {
+                        cb.Enabled = false;
+                    }
+                }
+                // تعطيل زر التقديم
+                submitButton.Enabled = false;
+
+                // الانتقال للسؤال التالي إذا لم يكن آخر سؤال
+                if (currentQuestionIndex < dtQuestions.Rows.Count - 1)
+                {
+                    currentQuestionIndex++;
+                    LoadQuestion(currentQuestionIndex);
+                }
+                else
+                {
+                    MessageBox.Show("You have answered all questions.", "Exam Completed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while submitting your answer: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

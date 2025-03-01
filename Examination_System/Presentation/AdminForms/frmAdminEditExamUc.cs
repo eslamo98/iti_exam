@@ -243,8 +243,7 @@ namespace Examination_System.Presentation.AdminForms
 
         private void btn_SaveChanges_Click(object sender, EventArgs e)
         {
-            //FormExamPreview examPreview = new FormExamPreview(currentExam);
-            //General.LoadUserControl(new FormExamPerviewUC(currentExam));
+
             if (currentExam.StartTime <= DateTime.Now)
             {
                 toastForm = new ToastForm(ToastType.Error, "You cannot delete an exam that has already ended.");

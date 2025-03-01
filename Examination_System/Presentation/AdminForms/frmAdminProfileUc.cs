@@ -134,8 +134,6 @@ namespace Examination_System.Presentation.AdminForms
                 {
                     //new frmAdminManageStudents().Show();
                 }
-
-
             }
             else
             {

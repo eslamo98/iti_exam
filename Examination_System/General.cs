@@ -15,7 +15,6 @@ namespace Examination_System
                           .AddJsonFile("appSettings.json")
                           .Build().GetSection("sqlConnection").Value;
 
-
         public static string rootPath =  Directory.GetParent(Application.StartupPath).Parent.Parent.Parent.FullName;
         public static frmLogin frmLogin { get; set; }
         public static Color primarycolor { get; set; } = Color.FromArgb(35, 40, 45);
