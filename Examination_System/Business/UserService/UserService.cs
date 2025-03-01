@@ -54,22 +54,16 @@ namespace Examination_System.Business
             try
             {
                 // SQL query to insert the student's answer into the Submit table
-                string query = @"
+                string query = @$"
                     INSERT INTO Submit (studentId, ExamId, QuestionId, AnswerId)
-                    VALUES (@studentId, @examId, @questionId, @answerId)";
+                    VALUES ({studentId}, {examId}, {questionId}, {answerId})";
 
                 // Parameters for the query
-                SqlParameter[] parameters =
-                {
-                    new SqlParameter("@studentId", studentId),
-                    new SqlParameter("@examId", examId),
-                    new SqlParameter("@questionId", questionId),
-                    new SqlParameter("@answerId", answerId)
-                };
+                
                 using (SqlConnection con = new SqlConnection(General.connectionString))
                 {
                     SqlCommand cmd = new SqlCommand(query, con);
-                    cmd.Parameters.AddRange(parameters);
+                    
 
                     // Execute the query
                     Reposatory.DML(cmd);

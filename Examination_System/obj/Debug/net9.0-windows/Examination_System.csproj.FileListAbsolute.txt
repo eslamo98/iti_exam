@@ -1,0 +1,14 @@
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Examination_System.exe
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Examination_System.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.FileExtensions.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Json.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.UserSecrets.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.Extensions.FileProviders.Physical.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\Microsoft.SqlServer.Server.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\runtimes\win\lib\net9.0\Microsoft.Data.SqlClient.dll
+D:\Iti\cc\ITI_Examination\Examination_System\bin\Debug\net9.0-windows\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\Iti\cc\ITI_Examination\Examination_System\obj\Debug\net9.0-windows\Examination_System.pdb
