@@ -290,7 +290,7 @@ namespace Examination_System.Presentation.AdminForms
                 {
                     General.LoadUserControl(new FormInsertQuestionsToExamUs(currentExam));
                 }
-                this.Hide();
+                General.LoadUserControl(new frmAdminManageExamsUc());
             }
             else
             {

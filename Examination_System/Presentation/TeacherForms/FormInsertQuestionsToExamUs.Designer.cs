@@ -51,17 +51,17 @@
             // QuestionTypes
             // 
             QuestionTypes.FormattingEnabled = true;
-            QuestionTypes.Location = new Point(52, 46);
+            QuestionTypes.Location = new Point(5, 47);
             QuestionTypes.Margin = new Padding(3, 2, 3, 2);
             QuestionTypes.Name = "QuestionTypes";
-            QuestionTypes.Size = new Size(220, 76);
+            QuestionTypes.Size = new Size(144, 58);
             QuestionTypes.TabIndex = 52;
             // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(52, 9);
+            label7.Location = new Point(5, 20);
             label7.Name = "label7";
             label7.Size = new Size(144, 25);
             label7.TabIndex = 48;
@@ -203,7 +203,7 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Times New Roman", 24F, FontStyle.Bold);
             label1.ForeColor = SystemColors.HotTrack;
-            label1.Location = new Point(248, 32);
+            label1.Location = new Point(247, 9);
             label1.Name = "label1";
             label1.Size = new Size(367, 36);
             label1.TabIndex = 55;
