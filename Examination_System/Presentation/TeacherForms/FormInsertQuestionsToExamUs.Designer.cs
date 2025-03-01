@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             QuestionTypes = new CheckedListBox();
             label7 = new Label();
-            customPanel1 = new Examination_System.CustomControls.CustomPanel();
+            customPanel1 = new CustomControls.CustomPanel();
             dgvQuestions = new DataGridView();
-            customPanel2 = new Examination_System.CustomControls.CustomPanel();
+            customPanel2 = new CustomControls.CustomPanel();
             dgvExams = new DataGridView();
             label1 = new Label();
             btn_back = new Button();
@@ -51,55 +51,11 @@
             // QuestionTypes
             // 
             QuestionTypes.FormattingEnabled = true;
-
-            QuestionTypes.Location = new Point(178, 101);
-            QuestionTypes.Name = "QuestionTypes";
-            QuestionTypes.Size = new Size(232, 92);
-            QuestionTypes.TabIndex = 52;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(34, 115);
-            label7.Name = "label7";
-            label7.Size = new Size(138, 23);
-
             QuestionTypes.Location = new Point(52, 46);
             QuestionTypes.Margin = new Padding(3, 2, 3, 2);
             QuestionTypes.Name = "QuestionTypes";
             QuestionTypes.Size = new Size(220, 76);
             QuestionTypes.TabIndex = 52;
-            // 
-            // dgvExams
-            // 
-            dgvExams.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvExams.Location = new Point(444, 147);
-            dgvExams.Margin = new Padding(3, 2, 3, 2);
-            dgvExams.Name = "dgvExams";
-            dgvExams.RowHeadersWidth = 51;
-            dgvExams.Size = new Size(416, 339);
-            dgvExams.TabIndex = 51;
-            // 
-            // button2
-            // 
-            //button2.Location = new Point(386, 512);
-            //button2.Name = "button2";
-            //button2.Size = new Size(104, 32);
-            //button2.TabIndex = 50;
-            //button2.Text = "Save Exam";
-            //button2.UseVisualStyleBackColor = true;
-            //button2.Click += BtnSave_Click;
-            // 
-            // dgvQuestions
-            // 
-            dgvQuestions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvQuestions.Location = new Point(3, 147);
-            dgvQuestions.Margin = new Padding(3, 2, 3, 2);
-            dgvQuestions.Name = "dgvQuestions";
-            dgvQuestions.RowHeadersWidth = 51;
-            dgvQuestions.Size = new Size(425, 339);
-            dgvQuestions.TabIndex = 49;
             // 
             // label7
             // 
@@ -107,8 +63,7 @@
             label7.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label7.Location = new Point(52, 9);
             label7.Name = "label7";
-            label7.Size = new Size(139, 25);
-
+            label7.Size = new Size(144, 25);
             label7.TabIndex = 48;
             label7.Text = "Question Type ";
             // 
@@ -122,11 +77,11 @@
             customPanel1.GradientBottomColor = SystemColors.HotTrack;
             customPanel1.GradientTopColor = Color.LightCyan;
             customPanel1.GrediantAngle = 90F;
-            customPanel1.Location = new Point(4, 210);
+            customPanel1.Location = new Point(5, 138);
             customPanel1.Margin = new Padding(3, 4, 3, 4);
             customPanel1.Name = "customPanel1";
             customPanel1.Padding = new Padding(0, 0, 0, 13);
-            customPanel1.Size = new Size(488, 452);
+            customPanel1.Size = new Size(488, 338);
             customPanel1.TabIndex = 53;
             // 
             // dgvQuestions
@@ -139,44 +94,43 @@
             dgvQuestions.BackgroundColor = Color.White;
             dgvQuestions.BorderStyle = BorderStyle.None;
             dgvQuestions.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = Color.Black;
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle7.ForeColor = Color.FromArgb(235, 230, 255);
-            dataGridViewCellStyle7.Padding = new Padding(15);
-            dataGridViewCellStyle7.SelectionBackColor = Color.Black;
-            dataGridViewCellStyle7.SelectionForeColor = Color.FromArgb(235, 230, 255);
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            dgvQuestions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = Color.Black;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(235, 230, 255);
+            dataGridViewCellStyle1.Padding = new Padding(15);
+            dataGridViewCellStyle1.SelectionBackColor = Color.Black;
+            dataGridViewCellStyle1.SelectionForeColor = Color.FromArgb(235, 230, 255);
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvQuestions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvQuestions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = SystemColors.Window;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle8.ForeColor = Color.Black;
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.GradientActiveCaption;
-            dataGridViewCellStyle8.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
-            dgvQuestions.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvQuestions.DefaultCellStyle = dataGridViewCellStyle2;
             dgvQuestions.Dock = DockStyle.Fill;
             dgvQuestions.EnableHeadersVisualStyles = false;
             dgvQuestions.Location = new Point(0, 0);
             dgvQuestions.Margin = new Padding(3, 4, 3, 4);
             dgvQuestions.Name = "dgvQuestions";
             dgvQuestions.ReadOnly = true;
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = SystemColors.Control;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle9.ForeColor = Color.Black;
-            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
-            dgvQuestions.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvQuestions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvQuestions.RowHeadersVisible = false;
             dgvQuestions.RowHeadersWidth = 25;
             dgvQuestions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvQuestions.Size = new Size(488, 439);
+            dgvQuestions.Size = new Size(488, 325);
             dgvQuestions.TabIndex = 0;
-            dgvQuestions.CellContentClick += dgvQuestions_CellContentClick;
             // 
             // customPanel2
             // 
@@ -188,11 +142,11 @@
             customPanel2.GradientBottomColor = SystemColors.HotTrack;
             customPanel2.GradientTopColor = Color.LightCyan;
             customPanel2.GrediantAngle = 90F;
-            customPanel2.Location = new Point(506, 210);
+            customPanel2.Location = new Point(507, 138);
             customPanel2.Margin = new Padding(3, 4, 3, 4);
             customPanel2.Name = "customPanel2";
             customPanel2.Padding = new Padding(0, 0, 0, 13);
-            customPanel2.Size = new Size(477, 452);
+            customPanel2.Size = new Size(477, 338);
             customPanel2.TabIndex = 54;
             // 
             // dgvExams
@@ -205,42 +159,42 @@
             dgvExams.BackgroundColor = Color.White;
             dgvExams.BorderStyle = BorderStyle.None;
             dgvExams.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = Color.Black;
-            dataGridViewCellStyle10.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle10.ForeColor = Color.FromArgb(235, 230, 255);
-            dataGridViewCellStyle10.Padding = new Padding(15);
-            dataGridViewCellStyle10.SelectionBackColor = Color.Black;
-            dataGridViewCellStyle10.SelectionForeColor = Color.FromArgb(235, 230, 255);
-            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.True;
-            dgvExams.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = Color.Black;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(235, 230, 255);
+            dataGridViewCellStyle4.Padding = new Padding(15);
+            dataGridViewCellStyle4.SelectionBackColor = Color.Black;
+            dataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(235, 230, 255);
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvExams.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvExams.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.BackColor = SystemColors.Window;
-            dataGridViewCellStyle11.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle11.ForeColor = Color.Black;
-            dataGridViewCellStyle11.SelectionBackColor = SystemColors.GradientActiveCaption;
-            dataGridViewCellStyle11.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.False;
-            dgvExams.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = SystemColors.Window;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle5.ForeColor = Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.GradientActiveCaption;
+            dataGridViewCellStyle5.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.False;
+            dgvExams.DefaultCellStyle = dataGridViewCellStyle5;
             dgvExams.Dock = DockStyle.Fill;
             dgvExams.EnableHeadersVisualStyles = false;
             dgvExams.Location = new Point(0, 0);
             dgvExams.Margin = new Padding(3, 4, 3, 4);
             dgvExams.Name = "dgvExams";
             dgvExams.ReadOnly = true;
-            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = SystemColors.Control;
-            dataGridViewCellStyle12.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle12.ForeColor = Color.Black;
-            dataGridViewCellStyle12.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
-            dgvExams.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Control;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle6.ForeColor = Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dgvExams.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             dgvExams.RowHeadersVisible = false;
             dgvExams.RowHeadersWidth = 25;
             dgvExams.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvExams.Size = new Size(477, 439);
+            dgvExams.Size = new Size(477, 325);
             dgvExams.TabIndex = 0;
             // 
             // label1
@@ -251,7 +205,7 @@
             label1.ForeColor = SystemColors.HotTrack;
             label1.Location = new Point(248, 32);
             label1.Name = "label1";
-            label1.Size = new Size(460, 45);
+            label1.Size = new Size(367, 36);
             label1.TabIndex = 55;
             label1.Text = "Insert Questions To Exam";
             // 
@@ -260,7 +214,7 @@
             btn_back.BackColor = Color.Black;
             btn_back.Font = new Font("Times New Roman", 13.8F, FontStyle.Bold);
             btn_back.ForeColor = Color.White;
-            btn_back.Location = new Point(329, 679);
+            btn_back.Location = new Point(328, 494);
             btn_back.Margin = new Padding(3, 4, 3, 4);
             btn_back.Name = "btn_back";
             btn_back.Size = new Size(310, 53);
@@ -283,13 +237,8 @@
             MaximumSize = new Size(863, 562);
             MinimumSize = new Size(863, 562);
             Name = "FormInsertQuestionsToExamUs";
-
-            Size = new Size(986, 749);
-            customPanel1.ResumeLayout(false);
-
             Size = new Size(863, 562);
-            ((System.ComponentModel.ISupportInitialize)dgvExams).EndInit();
-
+            customPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvQuestions).EndInit();
             customPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvExams).EndInit();

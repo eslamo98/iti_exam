@@ -102,8 +102,16 @@ namespace Examination_System.Presentation.TeacherForms
         }
         private void LoadCourses()
         {
-            cmbCourseName.DataSource = CourseService.GetAllCoursesListWithTeacherID(General.LoggedUser.ID);
-            cmbCourseName.DisplayMember = "Name";
+            if(General.LoggedUser.UserRole == UserRole.Admin)
+            {
+                cmbCourseName.DataSource = CourseService.GetAllCourses();
+                cmbCourseName.DisplayMember = "CourseName";
+            } else
+            {
+                cmbCourseName.DataSource = CourseService.GetAllCoursesListWithTeacherID(General.LoggedUser.ID); ;
+                cmbCourseName.DisplayMember = "Name";
+            }
+            
             cmbCourseName.ValueMember = "ID";
             cmbCourseName.SelectedIndex = -1;
         }
